@@ -10,10 +10,12 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -94,12 +96,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     Collections.reverse(bitmaps);
                                     Collections.reverse(delays);
                                     AnimatedGifEncoder encoder = new AnimatedGifEncoder();
-                                    File dir = new File("sdcard/DCIM/gifReverse");
+                                    String dirPath =
+                                            Environment.getExternalStorageDirectory()
+                                                    .getAbsolutePath()
+                                                    + "/DCIM/gifReverse";
+                                    File dir = new File(dirPath);
                                     if (!dir.exists()) {
                                         dir.mkdirs();
                                     }
                                     String resultFilePath =
-                                            dir.getPath() + "/" + System.currentTimeMillis()
+                                            dir.getAbsolutePath() + "/" + System.currentTimeMillis()
                                                     + ".gif";
                                     encoder.start(resultFilePath);
                                     for (int i = 0; i < bitmaps.size(); i++) {
@@ -128,6 +134,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             Glide.with(MainActivity.this).load(result).into(mReverseView);
                             Toast.makeText(MainActivity.this, R.string.trans_code_success,
                                     Toast.LENGTH_SHORT).show();
+                            MediaScannerConnection.scanFile(MainActivity.this, new String[]{result},
+                                    new String[]{"image/gif"},
+                                    new MediaScannerConnection.OnScanCompletedListener() {
+                                        @Override
+                                        public void onScanCompleted(String path, Uri uri) {
+                                            //ignore
+                                        }
+                                    });
                         } else {
                             Glide.with(MainActivity.this).load(R.drawable.ic_broken_image).into(
                                     mReverseView);
