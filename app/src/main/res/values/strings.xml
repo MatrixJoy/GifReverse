@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Gif逆序</string>
+    <string name="gif_reverse">Gif逆序</string>
+    <string name="permisstion_tips">我们需要读取权限去读取gif图</string>
+    <string name="access">授权</string>
+    <string name="refuse">拒绝</string>
+    <string name="auth_fail">授权失败</string>
+    <string name="trans_code_error">转码失败，可能不是GIF图哦</string>
+    <string name="trans_code_success">转码成功已保存至相册</string>
+    <string name="loading">转码中...</string>
+</resources>
